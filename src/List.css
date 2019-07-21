@@ -1,0 +1,15 @@
+.container{
+    padding: 20px 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box{
+    width:50%;
+}
+
+@media (max-width: 600px) {
+    .box{
+        width:100%;
+    }
+}

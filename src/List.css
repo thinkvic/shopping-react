@@ -1,14 +1,15 @@
 .container{
-    padding: 20px 50px;
+
     display: flex;
     flex-wrap: wrap;
 }
 
 .box{
-    width:50%;
+    margin:1%;
+    width:48%;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .box{
         width:100%;
     }

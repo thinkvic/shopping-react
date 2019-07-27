@@ -22,7 +22,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.disp = json;
   }
 
   doAddClick(id) {
@@ -58,7 +57,9 @@ class App extends React.Component {
         selectedmap = { ...selectedmap, [id]: amount };
       } else {
         console.log('id', id);
-        delete selectedmap[id]
+        const {[id]:deleted, ...newmap}=selectedmap;
+        selectedmap = newmap;
+        // delete selectedmap[id]
       }
     } else {
 
@@ -90,7 +91,7 @@ class App extends React.Component {
     let remove=false
     let currentmode="product"
     let description
-    if (this.state.mode == "cart") {
+    if (this.state.mode === "cart") {
       let totalprice=0;
       console.log("selected in render func", this.state.selectedmap)
       disp = json.reduce(
@@ -118,7 +119,7 @@ class App extends React.Component {
 
     let action = { add, remove };
 
-    console.log('displayed', this.disp);
+    console.log('displayed', disp);
     const active = { backgroundColor: '#888888' }
 
     return (
@@ -126,11 +127,11 @@ class App extends React.Component {
         <AppBar position="fixed" style={{ backgroundColor: '#666666' }}>
           <Toolbar>
             <Typography variant="h5" color="inherit">
-              NASDAQ &nbsp; &nbsp;{description}
+              STORE &nbsp; &nbsp;{description}
             </Typography>
 
             <div className="right">
-              <MenuItem style={currentmode == 'product' ? active : {}} onClick={() => this.viewMode('product')}>
+              <MenuItem style={currentmode === 'product' ? active : {}} onClick={() => this.viewMode('product')}>
                 <IconButton aria-label="Store home" color="inherit">
                   <Home />
                 </IconButton>
@@ -139,7 +140,7 @@ class App extends React.Component {
                 </Hidden>
               </MenuItem>
               &nbsp; &nbsp;
-              <MenuItem style={currentmode == 'cart' ? active : {}} onClick={() => this.viewMode('cart')}>
+              <MenuItem style={currentmode === 'cart' ? active : {}} onClick={() => this.viewMode('cart')}>
                 <IconButton aria-label="Shopping cart with total" color="inherit">
                   <Badge badgeContent={this.state.total} color="secondary">
                     <ShoppingCart />

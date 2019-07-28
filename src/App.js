@@ -1,11 +1,9 @@
 import React from 'react';
 import './App.css';
-import Item from './Item'
 import List from './List'
 import json from './products'
 import { AppBar, Toolbar, Typography, IconButton, MenuItem, Badge, Hidden } from '@material-ui/core';
 import { ShoppingCart, Home } from '@material-ui/icons';
-
 
 class App extends React.Component {
 
@@ -57,7 +55,7 @@ class App extends React.Component {
         selectedmap = { ...selectedmap, [id]: amount };
       } else {
         console.log('id', id);
-        const {[id]:deleted, ...newmap}=selectedmap;
+        const { [id]: deleted, ...newmap } = selectedmap;
         selectedmap = newmap;
         // delete selectedmap[id]
       }
@@ -71,15 +69,13 @@ class App extends React.Component {
       //   // total: this.state.total - 1
       // },
       (prevState) => {
-        return { total: prevState.total - 1, selectedmap: selectedmap }
+        return { total: prevState.total - 1, selectedmap}
       }
     )
   }
 
   viewMode(m) {
-    this.setState(
-      { mode: m }
-    )
+    this.setState({ mode: m });
   }
 
 
@@ -87,38 +83,34 @@ class App extends React.Component {
     // console.log('json', json);
     let disp
     let doClick
-    let add=false
-    let remove=false
-    let currentmode="product"
     let description
     if (this.state.mode === "cart") {
-      let totalprice=0;
+      let totalprice = 0;
       console.log("selected in render func", this.state.selectedmap)
+      // You can have selecedmap and totalprice as states (spaces for time efficiency)
+      // no need to calc during render, but wasting spaces.
       disp = json.reduce(
         (filtered, obj) => {
           if (obj.id in this.state.selectedmap) {
             let amount = this.state.selectedmap[obj.id];
-            totalprice=totalprice+obj.price*amount;
-            return [...filtered, { ...obj, amount}]
+            // totalamount=totalamount+amount
+            totalprice = totalprice + obj.price * amount;
+            return [...filtered, { ...obj, amount }]
           } else {
             return filtered
           }
         }, []
       )
       doClick = this.doDeleteClick
-      remove = true;
-      currentmode = "cart"
-      description = `Your total is $${totalprice}`
+      description = `Your total is $${totalprice}`;
+
     } else {
       disp = json;
       doClick = this.doAddClick;
-      add = true;
-      currentmode = "product"
-      description = `Welcome!`
+      description = `Welcome!`;
     }
 
-    let action = { add, remove };
-
+    // let action = { add, remove };
     console.log('displayed', disp);
     const active = { backgroundColor: '#888888' }
 
@@ -131,7 +123,7 @@ class App extends React.Component {
             </Typography>
 
             <div className="right">
-              <MenuItem style={currentmode === 'product' ? active : {}} onClick={() => this.viewMode('product')}>
+              <MenuItem style={this.state.mode === 'product' ? active : {}} onClick={() => this.viewMode('product')}>
                 <IconButton aria-label="Store home" color="inherit">
                   <Home />
                 </IconButton>
@@ -140,7 +132,7 @@ class App extends React.Component {
                 </Hidden>
               </MenuItem>
               &nbsp; &nbsp;
-              <MenuItem style={currentmode === 'cart' ? active : {}} onClick={() => this.viewMode('cart')}>
+              <MenuItem style={this.state.mode === 'cart' ? active : {}} onClick={() => this.viewMode('cart')}>
                 <IconButton aria-label="Shopping cart with total" color="inherit">
                   <Badge badgeContent={this.state.total} color="secondary">
                     <ShoppingCart />
@@ -159,7 +151,7 @@ class App extends React.Component {
         </AppBar>
 
         <div className="content">
-          <List products={disp} onButtonClick={doClick} action={action}>  </List>
+          <List items={disp} onButtonClick={doClick}></List>
         </div>
 
         {/* <Item product={products[0]} ></Item> */}

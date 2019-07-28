@@ -27,16 +27,17 @@ class App extends React.Component {
     let selectedmap = this.state.selectedmap;
     console.log('smap', selectedmap);
     // const foundindex = selectedarr.findIndex((obj) => obj.id == e)
+    let newmap={};
     if (id in selectedmap) {
       let amount = selectedmap[id] + 1;
-      selectedmap = { ...selectedmap, [id]: amount };
+      newmap = { ...selectedmap, [id]: amount };
     } else {
-      selectedmap = { ...selectedmap, [id]: 1 }
+      newmap = { ...selectedmap, [id]: 1 }
     }
 
     this.setState(
-      (prevState) => {
-        return { total: prevState.total + 1, selectedmap: selectedmap }
+      (state, props) => {
+        return { total: state.total + 1, selectedmap: newmap }
       }
     )
   }
@@ -47,29 +48,28 @@ class App extends React.Component {
     console.log(id);
     let selectedmap = this.state.selectedmap;
     console.log('current selected', selectedmap);
+    let newmap={};
+
     if (id in selectedmap) {
       let amount = selectedmap[id] - 1;
       console.log('amount', amount);
-
       if (amount) {
-        selectedmap = { ...selectedmap, [id]: amount };
+        newmap = { ...selectedmap, [id]: amount };
       } else {
         console.log('id', id);
-        const { [id]: deleted, ...newmap } = selectedmap;
-        selectedmap = newmap;
+        const { [id]: deleted, ...re } = selectedmap;
+        newmap = re;
         // delete selectedmap[id]
       }
-    } else {
-
-    }
+    } 
 
     this.setState(
       // {
       //   selectedmap: selectedmap,
       //   // total: this.state.total - 1
       // },
-      (prevState) => {
-        return { total: prevState.total - 1, selectedmap}
+      (state, props) => {
+        return { total: state.total - 1, selectedmap:newmap}
       }
     )
   }
